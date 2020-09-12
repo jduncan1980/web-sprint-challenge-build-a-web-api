@@ -61,10 +61,24 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. You might prepare by writing down your own answers before hand.
 
 1. The core features of Node.js and Express and why they are useful.
-1. Understand and explain the use of Middleware?
-1. The basic principles of the REST architectural style.
-1. Understand and explain the use of Express Routers.
-1. Describe tooling used to manually test the correctness of an API.
+   Node is a javascript runtime, based on the V8 JS engine, which allows us to run code written in JS outside of the browser. This is most useful because it allows us to write code for the server in JS, instead of a completely different language like PHP, Python, Java, etc. Express is a framework designed to simplify writing Node Servers. Some of it's chief features are the ability to easily set up route handlers,and to apply middleware functions to requests before responding.
+
+2. Understand and explain the use of Middleware?
+   Middleware is a function that is run between the server receiving a request and sending a response. It has access to both the Request and Response objects, and it can be chained (in the order you want it to run) with other middleware. It can modify the Request in whatever way you need it to, before passing it on to the next middleware function, till eventually express sends back a response. In express, middleware can be supplied to a specific route by calling server.use() and passing in the route and the middleware function, or by calling the MW directly within a route handler. Middleware is chained in the order that it is invoked.
+
+3. The basic principles of the REST architectural style.
+   A: Uniform Interfaces - Like a contract between the server and the client. Confidence that when the client accesses a certain URI, it will get back the expected resource, in the same way you expect your mail to be delivered to the same mailbox every day. ie. going to '/api/posts' should always return a list of posts, '/api/posts/id' should return posts specific to that id, etc. If there is a server issue, it should send back a clear error message.
+   B: Statelessness - All requests can stand on their own, and order doesn't matter. ie. Asking of someone "Where does Jim Live? How old is he?". The second question relies on the first to understand who "he" is, this would be equivalent to making a request to get a users ID, and then making another request for that user ID without providing it again.
+   C: Client-Server Model - The client shouldn't need to be concerned with how data is stored, or what database is used. The server needs to handle the task of retrieving the data correctly from the database, and send back the data the client is expecting, in the correct format.
+   D: Layered Architecture - Each layer (client, middleware/server, database) only need be concerned with interacting with the layers next to it. If you change the database, this might effect the way that the server interacts with it, but it shouldn't effect the client.
+   E: Caching - GET, PUT, and DELETE requests should be idempotent (repeatedly executing the same request will not change the state of the resources on the server)- POST, however, is not- repeatedly POSTing would add the resource multiple times.
+   F: Code on demand - This constraint is optional, and rarely adhered to. The API will send back additional javascript code with the data that allows the client to use said code to operate on data.
+
+4. Understand and explain the use of Express Routers.
+   Express Routers allow us to break up router handlers in to different files for the sake of readability and maintainability. Instead of having all your routes in one gigantic server, each router can be passed to the server (as middleware), and accessed based on the base URL supplied. For Example, if you invoked server.use('/api/posts', postRouter), all requests to [host]/api/posts would use the route handlers in postRouter.
+
+5. Describe tooling used to manually test the correctness of an API.
+   To manually test an API without a front end, you can use a program like Postman or Insomnia. These are essentially like browsers, but they allow us to set the request method (a regular browser sends everything as a GET request), set a request body, apply headers, etc.
 
 You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
 
